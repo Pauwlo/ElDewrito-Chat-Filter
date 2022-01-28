@@ -4,6 +4,10 @@
  * 
  * Please note that if a username contains a filtered
  * word, if will be filtered as well.
+ * 
+ * Values are NOT case sensitive.
+ * 
+ * Syntax: see https://www.w3schools.com/js/js_arrays.asp
  */
 var filteredNames = [];
 var filteredWords = [];
@@ -287,6 +291,13 @@ dew.on("variable_update", function(e){
     }
 });
 
+dew.on('mute-text', function(e){
+    var name = e.data.name;
+    var shouldMute = e.data.shouldMute;
+
+    return shouldMute ? addFilteredName(name) : removeFilteredName(name);
+});
+
 function fadeAway(){
     clearTimeout(hideTimer);
     hideTimer = setTimeout(function(){
@@ -359,4 +370,37 @@ function isFiltered(author, message) {
 
     const fullMessage = (author + message).toLowerCase();
     return filteredWords.filter(word => fullMessage.includes(word)).length > 0;
+}
+
+function addFilteredName(name) {
+    name = name.toLowerCase();
+
+    if (!filteredNames.includes(name)) {
+        filteredNames.push(name);
+
+        $('#chatWindow p').find('span').each(function () {
+            var $this = $(this);
+    
+            if ($this.text().toLowerCase() === name) {
+                $this.parent().addClass('filtered');
+            }
+        });
+    }
+}
+
+function removeFilteredName(name) {
+    name = name.toLowerCase();
+    var index = filteredNames.indexOf(name);
+
+    if (index > -1) {
+        filteredNames.splice(index, 1);
+
+        $('#chatWindow p').find('span').each(function () {
+            var $this = $(this);
+    
+            if ($this.text().toLowerCase() === name) {
+                $this.parent().removeClass('filtered');
+            }
+        });
+    }
 }

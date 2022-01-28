@@ -218,11 +218,17 @@ $(document).ready(function(){
                             "report": {
                                 name: 'Report'
                             },
+                            "mute-text": {
+                                name: "Mute text"
+                            },
                             "mute": {
-                                name: "Mute"
+                                name: "Mute voice"
+                            },
+                            "unmute-text": {
+                                name: "Unmute text"
                             },
                             "unmute": {
-                                name: "Unmute"
+                                name: "Unmute voice"
                             },
                         }),
                         callback: function (key, options) {
@@ -241,7 +247,7 @@ $(document).ready(function(){
                                         doReportPlayer(playerIndex, playerName);
                                     }));
                                     
-                                break;
+                                    break;
                                 case "kick":
                                     if(isHost) {
                                       dew.command("Server.KickUid " + $(this).attr('data-uid'));
@@ -253,13 +259,19 @@ $(document).ready(function(){
                                     dew.command("Server.KickBanUid " + $(this).attr('data-uid'));
                                     break;
                                 case "mute":
-                                setPlayerVolume($(this).attr('data-name'),$(this).attr('data-uid'),0);
-                                break;
-                            case "unmute":
-                                setPlayerVolume($(this).attr('data-name'),$(this).attr('data-uid'),100);
-                                break;
-                            default:
-                                console.log(key + " " + $(this).attr('data-name') + " " + $(this).attr('data-uid'));
+                                    setPlayerVolume($(this).attr('data-name'),$(this).attr('data-uid'),0);
+                                    break;
+                                case "mute-text":
+                                    mutePlayerText($(this).attr('data-name'));
+                                    break;
+                                case "unmute":
+                                    setPlayerVolume($(this).attr('data-name'),$(this).attr('data-uid'),100);
+                                    break;
+                                case "unmute-text":
+                                    unmutePlayerText($(this).attr('data-name'));
+                                    break;
+                                default:
+                                    console.log(key + " " + $(this).attr('data-name') + " " + $(this).attr('data-uid'));
                         }
                     },
                 }
@@ -1252,4 +1264,15 @@ function hideScoreboard() {
 
 function doReportPlayer(playerIndex, playerName) {
     dew.show('report', { playerIndex: playerIndex, playerName: playerName });
+}
+
+function mutePlayerText(name, shouldMute = true) {
+    dew.notify('mute-text', {
+        name: name,
+        shouldMute: shouldMute
+    });
+}
+
+function unmutePlayerText(name) {
+    return mutePlayerText(name, false);
 }
