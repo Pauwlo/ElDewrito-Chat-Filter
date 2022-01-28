@@ -156,3 +156,36 @@ a:hover{
     transform: scale(1);
     transform-origin: center center;
 }
+
+.filter-toggle-wrapper {
+    position: absolute;
+    bottom: 28px;
+    right: 25px;
+    font-size: 0.8rem;
+    text-align: right;
+    opacity: 0;
+    transition: .15s;
+}
+
+#chat:hover .filter-toggle-wrapper {
+    opacity: 1;
+}
+
+.filter-toggle-wrapper label {
+    opacity: .5;
+    transition: .1s;
+}
+
+.filter-toggle-wrapper label:hover {
+    opacity: .8;
+}
+
+.filter-toggle-wrapper label input {
+    width: 12px;
+    height: 12px;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    vertical-align: bottom;
+    top: -5px;
+}

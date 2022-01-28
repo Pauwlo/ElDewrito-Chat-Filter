@@ -171,6 +171,7 @@ dew.on("show", function(e){
                             $("#chatBox").focus();
                             $("#chatWindow").css("bottom", "26px");
                             $("#chatWindow").removeClass("hide-scrollbar");
+                            $('.filter-toggle-wrapper').show();
                         });
                         dew.command('Server.ListPlayersJSON', {}).then(function (e) {
                             cachedPlayerJSON = e;
@@ -179,6 +180,7 @@ dew.on("show", function(e){
                         $("#chatBox").hide();
                         $("#chatWindow").css("bottom", "0");
                         $("#chatWindow").addClass("hide-scrollbar");
+                        $('.filter-toggle-wrapper').hide();
                         fadeAway();
                     }
                 }
@@ -271,6 +273,7 @@ function chatboxHide(){
     $("#chatBox").hide();
     $("#chatWindow").css("bottom", "0");
     $("#chatWindow").addClass("hide-scrollbar");
+    $('.filter-toggle-wrapper').hide();
 }
 
 function hexToRgba(hex,opacity){
