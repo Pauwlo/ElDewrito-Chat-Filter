@@ -3,7 +3,7 @@
  * Add permanently filtered usernames and words here.
  * 
  * Please note that if a username contains a filtered
- * word, if will be filtered as well.
+ * word, it will be filtered as well.
  * 
  * Values are NOT case sensitive.
  * 
