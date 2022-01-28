@@ -19,7 +19,7 @@ Unofficial patch for ElDewrito 0.6.1 that allows users to filter (mute) certain 
 This patch adds a couple buttons to your game:
 
 - You can "Mute text" and "Unmute text" a player by right-clicking their name on the scoreboard.
-- You can temporarily disable the chat filter by uncheking the checkbox (visible when chat is opened and mouse is hovering it).
+- You can temporarily disable the chat filter by unchecking the checkbox (visible when chat is opened and mouse is hovering it).
 
 ## Filter words or players permanently
 
