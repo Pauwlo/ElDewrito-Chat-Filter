@@ -189,3 +189,7 @@ a:hover{
     vertical-align: bottom;
     top: -5px;
 }
+
+.filtered {
+    display: none;
+}

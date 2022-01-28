@@ -1,3 +1,13 @@
+/** 
+ * Chat Filter
+ * Add permanently filtered usernames and words here.
+ * 
+ * Please note that if a username contains a filtered
+ * word, if will be filtered as well.
+ */
+var filteredNames = [];
+var filteredWords = [];
+
 var isTeamChat = false;
 var stayOpen = false;
 var hideTimer;
@@ -28,6 +38,7 @@ var basePage = {
 var playerTabIndex = -1;
 var playersMatchList = [];
 var settingsArray = { 'Game.HideChat': '0', 'Player.Name': '0'};
+var filterEnabled = true;
 
 var cachedPlayerJSON;
 
@@ -124,6 +135,16 @@ $(document).ready(function(){
             playerTabIndex = -1;
         }
     });
+
+    $('#filter-toggle').change(function () {
+        if (this.checked) {
+            $('.filtered').css('display', '');
+            filterEnabled = true;
+        } else {
+            $('.filtered').css('display', 'block');
+            filterEnabled = false;
+        }
+    })
     
     loadSettings(0);
 });
@@ -217,16 +238,26 @@ dew.on("chat", function(e){
     }
 
     e.data.message =  e.data.message.substring(0, Math.min(128,  e.data.message.length));
+
+    var messageFiltered = isFiltered(e.data.sender, e.data.message);
+    if (messageFiltered) {
+        chatClass += ' filtered';
+    }
     
     var messageHtml = escapeHtml(e.data.message).replace(/\bhttps?:\/\/[^ ]+/ig, aWrap);
-    $("#chatWindow").append($('<span>', { 
+    var newElement = $("#chatWindow").append($('<span>', { 
         class: messageClass, 
         css: { backgroundColor: bgColor}, 
         text: e.data.sender 
     })
     .wrap($('<p>', { class: chatClass })).parent().append(messageHtml));
+
+    var p = newElement.find('p').last();
+    if (!filterEnabled && p.hasClass('filtered')) {
+        p.css('display', 'block');
+    }
     
-    if(settingsArray['Game.HideChat'] == 0){
+    if(settingsArray['Game.HideChat'] == 0 && (!messageFiltered || !filterEnabled)){
         dew.show();
     }
     
@@ -319,4 +350,13 @@ function adjustColor(color, amount){
         }
     }
     return "#" + colorhex[0] + colorhex[1] + colorhex[2];
+}
+
+function isFiltered(author, message) {
+    if (filteredNames.includes(author.toLowerCase())) {
+        return true;
+    }
+
+    const fullMessage = (author + message).toLowerCase();
+    return filteredWords.filter(word => fullMessage.includes(word)).length > 0;
 }
